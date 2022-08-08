@@ -1,15 +1,14 @@
 # Delphi UCL
 Universal Component Library for Delphi VCL
 
-This is an alternative library for https://github.com/VuioVuio/UniversalCL, with better design and easier maintenance.
-The old UniversalCL library will be removed soon. Thanks.
+This is a new version of Delphi UCL. The original can be found here: https://github.com/VuioVuio/DelphiUCL
 
-## What is news?
+This new version features adaptations to the new Windows Fluent Design System from Windows 11/10X.
 
-1. Better design structure, and easier to maintain.
-2. Git history now is more clearly.
-3. UpdateTheme now will be called by control's parent, not ThemeManager.
-4. Reduce spaghetti code, and more.
+## Whats new?
+
+1. A majority of components now feature rounded corners in the UI.
+2. A few components such as the Popup Menu, the Panel and the Button have been updated to have a few missing features from their VCL counterparts. Also they have a few new features.
 
 ## How to install?
 
