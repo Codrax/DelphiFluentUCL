@@ -1,5 +1,4 @@
 package DelphiUCLPackage;
-
 {$R *.res}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
 {$ALIGN 8}
@@ -65,6 +64,4 @@ contains
   UCL.HoverPanel in 'Source\UCL.HoverPanel.pas';
 
 end.
-
-
 

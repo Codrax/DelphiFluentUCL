@@ -3,7 +3,7 @@ unit UCL.ThemeManager;
 interface
 
 uses
-  Classes, Graphics,
+  Classes, Graphics, Vcl.ExtCtrls, SysUtils,
   UCL.Classes, UCL.SystemSettings;
 
 type
@@ -75,6 +75,7 @@ begin
         ttDark:
           FTheme := utDark;
       end;
+
       UpdateTheme;
     end;
 end;
@@ -149,6 +150,7 @@ begin
 
   //  Update color on border settings
   FColorOnBorder := IsColorOnBorderEnabled;
+
 
   Changed;
 end;

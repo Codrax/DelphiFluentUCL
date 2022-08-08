@@ -18,6 +18,7 @@ type
       FCustomAccentColor: TColor;
       FCustomBackColor: TUThemeColorSet;
       FTransparent: Boolean;
+      FRounded: Boolean;
 
       //  Internal
       procedure UpdateColors;
@@ -32,6 +33,7 @@ type
 
       //  Child events
       procedure CustomBackColor_OnChange(Sender: TObject);
+    procedure SetRounded(const Value: Boolean);
 
     protected
       procedure Paint; override;
@@ -52,6 +54,7 @@ type
       property CustomAccentColor: TColor read FCustomAccentColor write SetCustomAccentColor default $D77800;
       property CustomBackColor: TUThemeColorSet read FCustomBackColor write FCustomBackColor;
       property Transparent: Boolean read FTransparent write SetTransparent default false;
+      property Rounded: Boolean read FRounded write SetRounded default false;
 
       //  Modify props
       property BevelOuter default bvNone;
@@ -158,6 +161,17 @@ begin
     end;
 end;
 
+procedure TUPanel.SetRounded(const Value: Boolean);
+begin
+  if Value <> FRounded then
+    begin
+      if Value then
+        SetTransparent(Value);
+      FRounded := Value;
+      Invalidate;
+    end;
+end;
+
 procedure TUPanel.SetTransparent(const Value: Boolean);
 begin
   if Value <> FTransparent then
@@ -197,6 +211,8 @@ begin
   FCustomBackColor.Assign(PANEL_BACK);
   FTransparent := false;
 
+  FRounded := true;
+
   //  Modify props
   BevelOuter := bvNone;
   ParentBackground := false;
@@ -219,12 +235,22 @@ var
 begin
   //  Do not inherited
 
+  // Apply Pen
+  Canvas.pen.Style := psClear;
+
   //  Paint background
   if not Transparent then
     begin
       Canvas.Brush.Style := bsSolid;
       Canvas.Brush.Color := BackColor;
       Canvas.FillRect(Rect(0, 0, Width, Height));
+    end;
+
+  if Transparent and Rounded then
+    begin
+      Canvas.Brush.Style := bsSolid;
+      Canvas.Brush.Color := BackColor;
+      Canvas.RoundRect(0, 0, Width, Height, ROUND_MAX_CONST, ROUND_MAX_CONST);
     end;
 
   //  Paint bar
@@ -241,7 +267,8 @@ begin
         dBottom:
           BarRect := Rect(BarMargin, Height - BarThickness, Width - BarMargin, Height);
       end;
-      Canvas.FillRect(BarRect);
+      Canvas.RoundRect(BarRect.Left, BarRect.Top, BarRect.Right, BarRect.Bottom,
+                       ROUND_MIN_CONST, ROUND_MIN_CONST)
     end;
 
   //  Paint text

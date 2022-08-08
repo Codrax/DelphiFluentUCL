@@ -301,6 +301,7 @@ object formDemo: TformDemo
     IconFont.Name = 'Segoe MDL2 Assets'
     IconFont.Style = []
     State = cbsChecked
+    IsChecked = True
     Caption = '2 states checkbox'
   end
   object checkbox3States: TUCheckBox
@@ -314,7 +315,8 @@ object formDemo: TformDemo
     IconFont.Name = 'Segoe MDL2 Assets'
     IconFont.Style = []
     AllowGrayed = True
-    State = cbsGrayed
+    State = cbsChecked
+    IsChecked = True
     Caption = '3 states checkbox'
   end
   object radioA: TURadioButton
@@ -352,6 +354,7 @@ object formDemo: TformDemo
     Hint = 'This is a hint'
     Caption = 'Move mouse here to show tooltip'
     Color = 15132390
+    ParentBackground = True
     ParentShowHint = False
     ShowHint = True
     TabOrder = 0
@@ -359,6 +362,7 @@ object formDemo: TformDemo
     CustomBackColor.Color = 15132390
     CustomBackColor.LightColor = 15132390
     CustomBackColor.DarkColor = 2039583
+    Rounded = True
   end
   object comboChooseTheme: TComboBox
     Left = 30
@@ -383,123 +387,6 @@ object formDemo: TformDemo
     Caption = 'Reload'
     TabOrder = 2
     OnClick = buttonReloadClick
-  end
-  object captionbarMain: TUCaptionBar
-    Left = 0
-    Top = 0
-    Width = 950
-    Caption = '   Demo UCL app'
-    Color = 15921906
-    TabOrder = 3
-    CustomBackColor.Enabled = False
-    CustomBackColor.Color = 15921906
-    CustomBackColor.LightColor = 15921906
-    CustomBackColor.DarkColor = 2829099
-    object qbuttonQuit: TUQuickButton
-      Left = 905
-      Top = 0
-      Hint = 'Close'
-      Align = alRight
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe MDL2 Assets'
-      Font.Style = []
-      ParentFont = False
-      ParentShowHint = False
-      ShowHint = True
-      CustomBackColor.Enabled = False
-      CustomBackColor.Color = clBlack
-      CustomBackColor.LightColor = 15132390
-      CustomBackColor.DarkColor = 1644825
-      ButtonStyle = qbsQuit
-      Caption = #57606
-      ExplicitLeft = 150
-    end
-    object qbuttonFullScreen: TUQuickButton
-      Left = 725
-      Top = 0
-      Hint = 'Full screen'
-      Align = alRight
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe MDL2 Assets'
-      Font.Style = []
-      ParentFont = False
-      ParentShowHint = False
-      ShowHint = True
-      OnClick = qbuttonFullScreenClick
-      CustomBackColor.Enabled = False
-      CustomBackColor.Color = clBlack
-      CustomBackColor.LightColor = 15132390
-      CustomBackColor.DarkColor = 1644825
-      Caption = #59200
-      ExplicitLeft = 150
-    end
-    object qbuttonMin: TUQuickButton
-      Left = 815
-      Top = 0
-      Hint = 'Minimize'
-      Align = alRight
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe MDL2 Assets'
-      Font.Style = []
-      ParentFont = False
-      ParentShowHint = False
-      ShowHint = True
-      CustomBackColor.Enabled = False
-      CustomBackColor.Color = clBlack
-      CustomBackColor.LightColor = 15132390
-      CustomBackColor.DarkColor = 1644825
-      ButtonStyle = qbsMin
-      Caption = #59192
-      ExplicitLeft = 150
-    end
-    object qbuttonMax: TUQuickButton
-      Left = 860
-      Top = 0
-      Hint = 'Maximize'
-      Align = alRight
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe MDL2 Assets'
-      Font.Style = []
-      ParentFont = False
-      ParentShowHint = False
-      ShowHint = True
-      CustomBackColor.Enabled = False
-      CustomBackColor.Color = clBlack
-      CustomBackColor.LightColor = 15132390
-      CustomBackColor.DarkColor = 1644825
-      ButtonStyle = qbsMax
-      Caption = #57347
-      ExplicitLeft = 150
-    end
-    object qbuttonHighlight: TUQuickButton
-      Left = 770
-      Top = 0
-      Hint = 'Back'
-      Align = alRight
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe MDL2 Assets'
-      Font.Style = []
-      ParentFont = False
-      ParentShowHint = False
-      ShowHint = True
-      CustomBackColor.Enabled = False
-      CustomBackColor.Color = clBlack
-      CustomBackColor.LightColor = 15132390
-      CustomBackColor.DarkColor = 1644825
-      ButtonStyle = qbsHighlight
-      Caption = #57510
-      ExplicitLeft = 150
-    end
   end
   object progressHorz: TUProgressBar
     Left = 330
@@ -738,7 +625,7 @@ object formDemo: TformDemo
     Width = 130
     Height = 70
     Caption = 'Multi selection'
-    TabOrder = 12
+    TabOrder = 11
     OnClick = buttonVListMultiSelectionClick
     IconFont.Charset = DEFAULT_CHARSET
     IconFont.Color = clWindowText
@@ -770,7 +657,7 @@ object formDemo: TformDemo
     Height = 21
     Style = csDropDownList
     ItemIndex = 0
-    TabOrder = 13
+    TabOrder = 12
     Text = '100%'
     OnSelect = comboChooseScaleRatioSelect
     Items.Strings = (
@@ -786,7 +673,7 @@ object formDemo: TformDemo
     Width = 130
     Height = 70
     Caption = 'Drag reorder'
-    TabOrder = 15
+    TabOrder = 14
     OnClick = buttonVListDragReorderClick
     IconFont.Charset = DEFAULT_CHARSET
     IconFont.Color = clWindowText
@@ -818,7 +705,7 @@ object formDemo: TformDemo
     Height = 70
     Caption = 'Add item'
     ParentColor = True
-    TabOrder = 16
+    TabOrder = 15
     OnClick = buttonVListAddItemClick
     IconFont.Charset = DEFAULT_CHARSET
     IconFont.Color = clWindowText
@@ -848,7 +735,7 @@ object formDemo: TformDemo
     Width = 170
     Color = clWhite
     PopupMenu = popupEdit
-    TabOrder = 17
+    TabOrder = 16
     TextHint = 'Enter something here'
     CustomBackColor.Enabled = False
     CustomBackColor.Color = clWhite
@@ -867,6 +754,7 @@ object formDemo: TformDemo
     CustomBorderColor.DarkSelectedNone = 14120960
     CustomBorderColor.DarkSelectedHover = 14120960
     CustomBorderColor.DarkSelectedPress = 14120960
+    Transparent = False
   end
   object buttonVListRefreshEffect: TUListButton
     Left = 470
@@ -874,7 +762,7 @@ object formDemo: TformDemo
     Width = 130
     Height = 70
     Caption = 'Refresh effect'
-    TabOrder = 18
+    TabOrder = 17
     OnClick = buttonVListRefreshEffectClick
     IconFont.Charset = DEFAULT_CHARSET
     IconFont.Color = clWindowText
@@ -942,7 +830,7 @@ object formDemo: TformDemo
     Align = alRight
     Color = 15132390
     ParentColor = False
-    TabOrder = 14
+    TabOrder = 13
     AniSet.AniKind = akOut
     AniSet.AniFunctionKind = afkQuintic
     AniSet.DelayStartTime = 0
@@ -968,6 +856,123 @@ object formDemo: TformDemo
       Visible = False
       Icons = #57604#57607
       IconClick = hoverpanelItemActionIconClick
+    end
+  end
+  object captionbarMain: TUCaptionBar
+    Left = 0
+    Top = 0
+    Width = 950
+    Caption = '   Demo UCL app'
+    Color = 15921906
+    TabOrder = 19
+    CustomBackColor.Enabled = False
+    CustomBackColor.Color = 15921906
+    CustomBackColor.LightColor = 15921906
+    CustomBackColor.DarkColor = 2829099
+    object qbuttonQuit: TUQuickButton
+      Left = 905
+      Top = 0
+      Hint = 'Close'
+      Align = alRight
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe MDL2 Assets'
+      Font.Style = []
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      CustomBackColor.Enabled = False
+      CustomBackColor.Color = clBlack
+      CustomBackColor.LightColor = 15132390
+      CustomBackColor.DarkColor = 1644825
+      ButtonStyle = qbsQuit
+      Caption = #57606
+      ExplicitLeft = 150
+    end
+    object qbuttonFullScreen: TUQuickButton
+      Left = 725
+      Top = 0
+      Hint = 'Full screen'
+      Align = alRight
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe MDL2 Assets'
+      Font.Style = []
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      OnClick = qbuttonFullScreenClick
+      CustomBackColor.Enabled = False
+      CustomBackColor.Color = clBlack
+      CustomBackColor.LightColor = 15132390
+      CustomBackColor.DarkColor = 1644825
+      Caption = #59200
+      ExplicitLeft = 150
+    end
+    object qbuttonMin: TUQuickButton
+      Left = 815
+      Top = 0
+      Hint = 'Minimize'
+      Align = alRight
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe MDL2 Assets'
+      Font.Style = []
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      CustomBackColor.Enabled = False
+      CustomBackColor.Color = clBlack
+      CustomBackColor.LightColor = 15132390
+      CustomBackColor.DarkColor = 1644825
+      ButtonStyle = qbsMin
+      Caption = #59192
+      ExplicitLeft = 150
+    end
+    object qbuttonMax: TUQuickButton
+      Left = 860
+      Top = 0
+      Hint = 'Maximize'
+      Align = alRight
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe MDL2 Assets'
+      Font.Style = []
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      CustomBackColor.Enabled = False
+      CustomBackColor.Color = clBlack
+      CustomBackColor.LightColor = 15132390
+      CustomBackColor.DarkColor = 1644825
+      ButtonStyle = qbsMax
+      Caption = #57347
+      ExplicitLeft = 150
+    end
+    object qbuttonHighlight: TUQuickButton
+      Left = 770
+      Top = 0
+      Hint = 'Back'
+      Align = alRight
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe MDL2 Assets'
+      Font.Style = []
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      CustomBackColor.Enabled = False
+      CustomBackColor.Color = clBlack
+      CustomBackColor.LightColor = 15132390
+      CustomBackColor.DarkColor = 1644825
+      ButtonStyle = qbsHighlight
+      Caption = #57510
+      ExplicitLeft = 150
     end
   end
   object popupEdit: TUPopupMenu

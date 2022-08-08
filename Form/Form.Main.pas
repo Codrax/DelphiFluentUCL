@@ -1,24 +1,19 @@
 ﻿unit Form.Main;
-
 interface
-
 uses
   //  VCL
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, Menus,
-
   //  UCL
   UCL.Classes, UCL.Graphics, UCL.Utils, UCL.ThemeManager, UCL.IntAnimation, UCL.DragReorder,
   UCL.Form, UCL.CaptionBar, UCL.Panel, UCL.ProgressBar, UCL.Button, UCL.Slider, UCL.Text,
   UCL.Hyperlink, UCL.ListButton, UCL.QuickButton, UCL.ScrollBox, UCL.Edit, UCL.PopupMenu,
   UCL.CheckBox, UCL.RadioButton, UCL.HoverPanel;
-
 type
   TformDemo = class(TUForm)
     panelTest: TUPanel;
     comboChooseTheme: TComboBox;
     buttonReload: TButton;
-    captionbarMain: TUCaptionBar;
     progressHorz: TUProgressBar;
     buttonFocus: TUButton;
     buttonToggle: TUButton;
@@ -42,11 +37,6 @@ type
     progressVert: TUProgressBar;
     buttonVListMultiSelection: TUListButton;
     comboChooseScaleRatio: TComboBox;
-    qbuttonQuit: TUQuickButton;
-    qbuttonFullScreen: TUQuickButton;
-    qbuttonMin: TUQuickButton;
-    qbuttonMax: TUQuickButton;
-    qbuttonHighlight: TUQuickButton;
     boxList: TUScrollBox;
     buttonVListDragReorder: TUListButton;
     buttonVListAddItem: TUListButton;
@@ -62,6 +52,12 @@ type
     popupitemCopy: TMenuItem;
     popupitemPaste: TMenuItem;
     hoverpanelItemAction: TUHoverPanel;
+    captionbarMain: TUCaptionBar;
+    qbuttonQuit: TUQuickButton;
+    qbuttonFullScreen: TUQuickButton;
+    qbuttonMin: TUQuickButton;
+    qbuttonMax: TUQuickButton;
+    qbuttonHighlight: TUQuickButton;
     procedure FormCreate(Sender: TObject);
     procedure comboChooseThemeSelect(Sender: TObject);
     procedure buttonReloadClick(Sender: TObject);
@@ -81,22 +77,18 @@ type
   public
     { Public declarations }
   end;
-
 var
   formDemo: TformDemo;
-
 implementation
-
 uses
   UCL.FontIcons;
-
 {$R *.dfm}
+
 
 procedure TformDemo.buttonReloadClick(Sender: TObject);
 begin
   ThemeManager.UpdateTheme;
 end;
-
 procedure TformDemo.buttonVListAddItemClick(Sender: TObject);
 var
   Item: TUListButton;
@@ -111,7 +103,6 @@ begin
   Item.OnClick := Item_Click;
   Item.Parent := boxList;
 end;
-
 procedure TformDemo.buttonVListDragReorderClick(Sender: TObject);
 var
   i: Integer;
@@ -125,7 +116,6 @@ begin
           RemoveDragHandle(boxList.Controls[i] as TUListButton);
       end;
 end;
-
 procedure TformDemo.buttonVListMultiSelectionClick(Sender: TObject);
 var
   Value: TUSelectMode;
@@ -135,12 +125,10 @@ begin
     Value := smToggle
   else
     Value := smSelect;
-
   for i := 0 to boxList.ControlCount - 1 do
     if boxList.Controls[i] is TUListButton then
       (boxList.Controls[i] as TUListButton).SelectMode := Value;
 end;
-
 procedure TformDemo.buttonVListRefreshEffectClick(Sender: TObject);
 var
   Ani: TIntAni;
@@ -149,7 +137,6 @@ var
 begin
   Control := boxList;
   Space := 25;
-
   Ani := TIntAni.Create(0, Space,
     procedure (V: Integer)
     begin
@@ -163,14 +150,12 @@ begin
   Ani.AniSet.QuickAssign(akOut, afkQuartic, 0, 120, 12);
   Ani.Start;
 end;
-
 procedure TformDemo.buttonRandomProgressClick(Sender: TObject);
 begin
   Randomize;
   progressHorz.GoToValue(Random(100));
   progressVert.GoToValue(Random(100));
 end;
-
 procedure TformDemo.comboChooseScaleRatioSelect(Sender: TObject);
 begin
   case comboChooseScaleRatio.ItemIndex of
@@ -186,20 +171,19 @@ begin
       ScaleForPPI(192);
   end;
 end;
-
 procedure TformDemo.comboChooseThemeSelect(Sender: TObject);
 begin
   ThemeManager.ThemeType := TUThemeType(comboChooseTheme.ItemIndex);
 end;
-
 procedure TformDemo.FormCreate(Sender: TObject);
+var
+  a: integer;
 begin
   panelTest.Hint :=
     'This is line 1' + sLineBreak +
     'This is line 2' + sLineBreak +
     'This is a multi-line tooltip';
 end;
-
 procedure TformDemo.hoverpanelItemActionIconClick(Sender: TObject;
   Index: Integer);
 begin
@@ -210,13 +194,11 @@ begin
       ShowMessage('Remove button clicked');
   end;
 end;
-
 procedure TformDemo.Item_Click(Sender: TObject);
 begin
   if Sender is TWinControl then
     hoverpanelItemAction.ClipTo(Sender as TWinControl);
 end;
-
 procedure TformDemo.popupEditItemClick(Sender: TObject; Index: Integer);
 var
   Edit: TCustomEdit;
@@ -235,7 +217,6 @@ begin
       end;
     end;
 end;
-
 procedure TformDemo.qbuttonFullScreenClick(Sender: TObject);
 begin
   FullScreen := not FullScreen;
@@ -244,10 +225,8 @@ begin
   else
     qbuttonFullScreen.Caption := UF_FULL_SCREEN;
 end;
-
 procedure TformDemo.sliderVertChange(Sender: TObject);
 begin
   progressVert.Value := sliderVert.Value;
 end;
-
 end.

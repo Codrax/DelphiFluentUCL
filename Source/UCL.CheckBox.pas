@@ -244,7 +244,7 @@ begin
     begin
       Canvas.Brush.Style := bsSolid;
       Canvas.Brush.Handle := CreateSolidBrushWithAlpha(Color, 255);
-      Canvas.FillRect(Rect(0, 0, Width, Height));
+      Canvas.RoundRect(Rect(0, 0, Width, Height), ROUND_MIN_CONST, ROUND_MIN_CONST);
     end;
 
   //  Draw text

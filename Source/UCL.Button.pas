@@ -343,9 +343,13 @@ var
 begin
   inherited;
 
+  // Apply Pen
+  Canvas.Pen.Style := psClear;
+
   //  Paint background
   Canvas.Brush.Handle := CreateSolidBrushWithAlpha(BackColor, 255);
-  Canvas.FillRect(Rect(0, 0, Width, Height));
+  Canvas.RoundRect(0, 0, Width, Height, ROUND_MIN_CONST, ROUND_MIN_CONST);
+  //Canvas.FillRect(Rect(0, 0, Width, Height));
 
   //  Draw border
   DrawBorder(Canvas, Rect(0, 0, Width, Height), BorderColor, BorderThickness);

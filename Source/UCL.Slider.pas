@@ -11,7 +11,7 @@ type
     private
       var BarHeight: Integer;
       var CurWidth, CurHeight, CurCorner: Integer;
-      var ActiveRect, NormalRect, CurRect: TRect;
+      var ActiveRect, NormalRect, CurRect, CenterRect: TRect;
       var AccentColor, BackColor, CurColor: TColor;
 
       FCustomBackColor: TUStateColorSet;
@@ -132,20 +132,24 @@ begin
       _CurColor := SelectColorSet(TM, CustomCursorColor, SLIDER_CURSOR);
 
       BackColor := _BackColor.GetColor(TM, ControlState, false);
-      if ControlState = csNone then
-        CurColor := AccentColor
-      else
-        CurColor := _CurColor.GetColor(TM, ControlState, false);
+      CurColor := _CurColor.GetColor(TM, csPress, false);
     end;
 end;
 
 procedure TUSlider.UpdateRects;
+var
+  divby: integer;
 begin
+  if ControlState = csHover then
+    divby := 6
+  else
+    divby := 5;
+
   if Orientation = oHorizontal then
     begin
       ActiveRect.Left := 0;
       ActiveRect.Top := (Height - BarHeight) div 2;
-      ActiveRect.Right := Round((Width - CurWidth) * (Value - Min) / (Max - Min));
+      ActiveRect.Right := Round((Width - CurWidth) * (Value - Min) / (Max - Min)) + CurWidth div 2;
       ActiveRect.Bottom := ActiveRect.Top + BarHeight;
 
       NormalRect.Left := ActiveRect.Right + 1;
@@ -153,17 +157,22 @@ begin
       NormalRect.Right := Width;
       NormalRect.Bottom := ActiveRect.Bottom;
 
-      CurRect.Left := ActiveRect.Right;
+      CurRect.Left := ActiveRect.Right - CurWidth div 2;
       CurRect.Top := Height div 2 - CurHeight div 2;
       CurRect.Right := CurRect.Left + CurWidth;
       CurRect.Bottom := CurRect.Top + CurHeight;
+
+      CenterRect.Left := CurRect.Left + CurWidth div divby;
+      CenterRect.Top := CurRect.Top + CurHeight div divby;
+      CenterRect.Right := CurRect.Right - CurWidth div divby;
+      CenterRect.Bottom := CurRect.Bottom - CurHeight div divby;
     end
   else
     begin
       NormalRect.Left := (Width - BarHeight) div 2;
       NormalRect.Top := 0;
       NormalRect.Right := NormalRect.Left + BarHeight;
-      NormalRect.Bottom := Round((Height - CurHeight) * ({Value - Min}Max - Value) / (Max - Min));
+      NormalRect.Bottom := Round((Height - CurHeight) * ({Value - Min}Max - Value) / (Max - Min)) + ROUND_TINY_CONST;
 
       ActiveRect.Left := NormalRect.Left;
       ActiveRect.Top := NormalRect.Bottom + 1;
@@ -171,9 +180,14 @@ begin
       ActiveRect.Bottom := Height;
 
       CurRect.Left := (Width - CurWidth) div 2;
-      CurRect.Top := NormalRect.Bottom;
+      CurRect.Top := NormalRect.Bottom - ROUND_TINY_CONST;
       CurRect.Right := CurRect.Left + CurWidth;
       CurRect.Bottom := CurRect.Top + CurHeight;
+
+      CenterRect.Left := CurRect.Left + CurWidth div divby;
+      CenterRect.Top := CurRect.Top + CurHeight div divby;
+      CenterRect.Right := CurRect.Right - CurWidth div divby;
+      CenterRect.Bottom := CurRect.Bottom - CurHeight div divby;
     end;
 end;
 
@@ -268,10 +282,10 @@ end;
 constructor TUSlider.Create(aOwner: TComponent);
 begin
   inherited;
-  CurWidth := 8;
-  CurHeight := 23;
+  CurWidth := 20;
+  CurHeight := 20;
   CurCorner := 5;
-  BarHeight := 2;
+  BarHeight := 4;
 
   FIsSliding := false;
   FControlState := csNone;
@@ -308,20 +322,22 @@ end;
 procedure TUSlider.Paint;
 begin
   inherited;
+  Canvas.Pen.Style := psClear;
 
   //  Paint active part
   Canvas.Brush.Handle := CreateSolidBrushWithAlpha(AccentColor, 255);
-  Canvas.FillRect(ActiveRect);
+  Canvas.RoundRect(ActiveRect, ROUND_TINY_CONST, ROUND_TINY_CONST);
 
   //  Paint normal part
   Canvas.Brush.Handle := CreateSolidBrushWithAlpha(BackColor, 255);
-  Canvas.FillRect(NormalRect);
+  Canvas.RoundRect(NormalRect, ROUND_TINY_CONST, ROUND_TINY_CONST);
 
   //  Paint cursor
-  Canvas.Pen.Color := CurColor;
   Canvas.Brush.Handle := CreateSolidBrushWithAlpha(CurColor, 255);
-  Canvas.RoundRect(CurRect, CurCorner, CurCorner);
-  Canvas.FloodFill(CurRect.Left + CurRect.Width div 2, CurRect.Top + CurRect.Height div 2, CurColor, fsSurface);
+  Canvas.Ellipse(CurRect);
+
+  Canvas.Brush.Handle := CreateSolidBrushWithAlpha(AccentColor, 255);
+  Canvas.Ellipse(CenterRect);
 end;
 
 procedure TUSlider.Resize;
@@ -346,6 +362,8 @@ procedure TUSlider.CM_MouseEnter(var Msg: TMessage);
 begin
   if not Enabled then exit;
   ControlState := csHover;
+
+  UpdateRects;
   inherited;
 end;
 
@@ -353,6 +371,8 @@ procedure TUSlider.CM_MouseLeave(var Msg: TMessage);
 begin
   if not Enabled then exit;
   ControlState := csNone;
+
+  UpdateRects;
   inherited;
 end;
 

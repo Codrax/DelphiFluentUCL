@@ -1,0 +1,153 @@
+unit UCL.SystemSettings;
+
+interface
+
+uses
+  UCL.Classes,
+  Registry,
+  Windows,
+  Graphics;
+
+function GetAccentColor: TColor;
+function IsColorOnBorderEnabled: Boolean;
+function IsColorOnSurfaceEnabled: Boolean;
+function IsAppsUseDarkTheme: Boolean;
+function IsSystemUseDarkTheme: Boolean;
+function IsTransparencyEnabled: Boolean;
+
+implementation
+
+function GetAccentColor: TColor;
+var
+  R: TRegistry;
+  ARGB: Cardinal;
+  RGBv, R, G,B: longint;
+begin
+  Result := $D77800;  //  Default value on error
+
+  R := TRegistry.Create;
+  try
+    R.RootKey := HKEY_CURRENT_USER;
+
+    if R.OpenKeyReadOnly('Software\Microsoft\Windows\DWM\') and R.ValueExists('AccentColor') then begin
+      ARGB := R.ReadInteger('AccentColor');
+      Result := ARGB mod $FF000000; //  ARGB to RGB
+    end;
+  finally
+    R.Free;
+  end;
+
+  Result := Result + 100;
+
+
+  RGBv := ColorToRGB(Result);
+  R := GetRValue(RBGval);
+  G := GetGValue(RBGval);
+  B := GetBValue(RBGval);
+
+  R := R + perc;
+  G := G + perc;
+  B := B + perc;
+
+  if R < 0 then R := 0;
+  if G < 0 then G := 0;
+  if B < 0 then B := 0;
+
+  if R > 255 then R := 255;
+  if G > 255 then G := 255;
+  if B > 255 then B := 255;
+
+  Result := RGB(r,g,b);
+end;
+
+function IsColorOnBorderEnabled: Boolean;
+var
+  R: TRegistry;
+begin
+  Result := False;
+
+  R := TRegistry.Create;
+  try
+    R.RootKey := HKEY_CURRENT_USER;
+
+    if R.OpenKeyReadOnly('Software\Microsoft\Windows\DWM\') and R.ValueExists('ColorPrevalence') then begin
+      Result := R.ReadInteger('ColorPrevalence') <> 0;
+    end;
+  finally
+    R.Free;
+  end;
+end;
+
+function IsColorOnSurfaceEnabled: Boolean;
+var
+  R: TRegistry;
+begin
+  Result := False;
+
+  R := TRegistry.Create;
+  try
+    R.RootKey := HKEY_CURRENT_USER;
+
+    if R.OpenKeyReadOnly('Software\Microsoft\Windows\CurrentVersion\Themes\Personalize\') and R.ValueExists('ColorPrevalence') then begin
+      Result := R.ReadInteger('ColorPrevalence') <> 0;
+    end;
+  finally
+    R.Free;
+  end;
+end;
+
+function IsAppsUseDarkTheme: Boolean;
+var
+  R: TRegistry;
+begin
+  Result := False;
+
+  R := TRegistry.Create;
+  try
+    R.RootKey := HKEY_CURRENT_USER;
+
+    if R.OpenKeyReadOnly('Software\Microsoft\Windows\CurrentVersion\Themes\Personalize\') and R.ValueExists('AppsUseLightTheme') then begin
+      Result := R.ReadInteger('AppsUseLightTheme') <> 1;
+    end;
+  finally
+    R.Free;
+  end;
+end;
+
+function IsSystemUseDarkTheme: Boolean;
+var
+  R: TRegistry;
+begin
+  Result := False;
+
+  R := TRegistry.Create;
+  try
+    R.RootKey := HKEY_CURRENT_USER;
+
+    if R.OpenKeyReadOnly('Software\Microsoft\Windows\CurrentVersion\Themes\Personalize\') and R.ValueExists('SystemUsesLightTheme') then begin
+      Result := R.ReadInteger('SystemUsesLightTheme') <> 1;
+    end;
+  finally
+    R.Free;
+  end;
+end;
+
+function IsTransparencyEnabled: Boolean;
+var
+  R: TRegistry;
+begin
+  Result := False;
+
+  R := TRegistry.Create;
+  try
+    R.RootKey := HKEY_CURRENT_USER;
+
+    if R.OpenKeyReadOnly('Software\Microsoft\Windows\CurrentVersion\Themes\Personalize\') and R.ValueExists('EnableTransparency') then begin
+      Result := R.ReadInteger('EnableTransparency') <> 1;
+    end;
+  finally
+    R.Free;
+  end;
+end;
+
+end.

@@ -3,7 +3,7 @@ unit UCL.Graphics;
 interface
 
 uses
-  Classes, Types, Windows, Graphics, Themes;
+  Classes, Types, Windows, Graphics, Themes, UCL.Colors;
 
 {$REGION 'Compatible code'}
 
@@ -29,7 +29,7 @@ const
 
 procedure GetCenterPos(Width, Height: Integer; Rect: TRect; out X, Y: Integer);
 procedure DrawTextRect(const Canvas: TCanvas; HAlign: TAlignment; VAlign: TVerticalAlignment; Rect: TRect; Text: string; TextOnGlass: Boolean);
-procedure DrawBorder(const Canvas: TCanvas; R: TRect; Color: TColor; Thickness: Byte);
+procedure DrawBorder(const Canvas: TCanvas; R: TRect; Color: TColor; Thickness: Byte; SquareRect: Boolean = false);
 
 var
   DEFAULT_GLASSTEXT_GLOWSIZE: Byte;
@@ -226,7 +226,7 @@ begin
     end;
 end;
 
-procedure DrawBorder(const Canvas: TCanvas; R: TRect; Color: TColor; Thickness: Byte);
+procedure DrawBorder(const Canvas: TCanvas; R: TRect; Color: TColor; Thickness: Byte; SquareRect: Boolean);
 var
   TL, BR: Byte;
 begin
@@ -238,9 +238,13 @@ begin
       else
         BR := TL;
 
+      Canvas.Pen.Style := psSolid;
       Canvas.Pen.Color := Color;
       Canvas.Pen.Width := Thickness;
-      Canvas.Rectangle(Rect(TL, TL, R.Width - BR, R.Height - BR));
+      if SquareRect then
+        Canvas.Rectangle(TL, TL, R.Width - BR, R.Height - BR)
+      else
+        Canvas.RoundRect(TL, TL, R.Width - BR, R.Height - BR, ROUND_MIN_CONST, ROUND_MIN_CONST);
     end;
 end;
 

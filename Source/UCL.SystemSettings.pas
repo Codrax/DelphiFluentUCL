@@ -6,6 +6,7 @@ uses
   UCL.Classes,
   Registry,
   Windows,
+  UCL.Utils,
   Graphics;
 
 function GetAccentColor: TColor;
@@ -35,6 +36,8 @@ begin
   finally
     R.Free;
   end;
+
+  Result := BrightenColor(Result, 50);
 end;
 
 function IsColorOnBorderEnabled: Boolean;

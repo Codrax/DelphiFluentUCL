@@ -56,7 +56,7 @@ type
       property CustomBackColor: TUThemeColorSet read FCustomBackColor write FCustomBackColor;
       property CustomBorderColor: TUStateColorSet read FCustomBorderColor write FCustomBorderColor;
 
-      property Transparent: Boolean read FTransparent write SetTransparent default false;
+      property Transparent: Boolean read FTransparent write SetTransparent default true;
 
       //  Modify default props
       property BorderStyle default bsNone;
@@ -232,7 +232,12 @@ begin
       Canvas.Handle := DC;
       Canvas.Brush.Style := bsClear;
 
-      DrawBorder(Canvas, Rect(0, 0, Width, Height), BorderColor, BorderThickness);
+      if Transparent then
+      begin
+        DrawBorder(Canvas, Rect(0, 0, Width, Height), Self.Color, BorderThickness, True);
+        DrawBorder(Canvas, Rect(0, 0, Width, Height), BorderColor, BorderThickness);
+      end else
+        DrawBorder(Canvas, Rect(0, 0, Width, Height), BorderColor, BorderThickness, True)
     finally
       Canvas.free;
     end;

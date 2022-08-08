@@ -1,4 +1,4 @@
-unit UCL.PopupMenu;
+﻿unit UCL.PopupMenu;
 
 interface
 
@@ -22,6 +22,7 @@ type
 
       FItemWidth: Integer;
       FItemHeight: Integer;
+      FSeparatorHeight: Integer;
       FTopSpace: Integer;
       FImageKind: TUImageKind;
 
@@ -51,12 +52,15 @@ type
       property AniSet: TIntAniSet read FAniSet write FAniSet;
       property CustomBackColor: TUThemeColorSet read FCustomBackColor write FCustomBackColor;
 
+      property SeparatorHeight: Integer read FSeparatorHeight write FSeparatorHeight default 16;
+
       property ItemWidth: Integer read FItemWidth write FItemWidth default 200;
       property ItemHeight: Integer read FItemHeight write FItemHeight default 32;
       property TopSpace: Integer read FTopSpace write FTopSpace default 5;
       property ImageKind: TUImageKind read FImageKind write FImageKind default ikFontIcon;
 
       property OnItemClick: TIndexNotifyEvent read FOnItemClick write FOnItemClick;
+      property OnPopup;
   end;
 
 implementation
@@ -120,6 +124,8 @@ begin
   FTopSpace := 5;
   FImageKind := ikFontIcon;
 
+  FSeparatorHeight := 16;
+
   FAniSet := TIntAniSet.Create;
   FAniSet.QuickAssign(akOut, afkQuartic, 0, 120, 12);
 
@@ -139,8 +145,14 @@ end;
 
 procedure TUPopupMenu.ExtractPackedContent(Input: string; out Icon, Text, Detail: string);
 var
-  SeparatorPos: Integer;
+  SeparatorPos,
+  InputStart: Integer;
 begin
+  if FImageKind = ikFontIcon then
+    InputStart := 2
+  else
+    InputStart := 1;
+
   if Length(Input) = 0 then
     begin
       Icon := '';
@@ -150,7 +162,7 @@ begin
   else
     begin
       Icon := Input[1];
-      Input := Copy(Input, 2, Length(Input) - 1);
+      Input := Copy(Input, InputStart, Length(Input));
       SeparatorPos := Pos('|', Input);
       if SeparatorPos = 0 then
         begin
@@ -176,6 +188,7 @@ var
 
   DPI: Integer;
   Ratio: Single;
+  TotalSeparators: integer;
   TotalItemsHeight: Integer;
   Spacing: Integer;
   ItemW: Integer;
@@ -184,6 +197,10 @@ var
 begin
   //  Update theme
   UpdateTheme(false);
+
+  // Popup ID
+  if (Assigned(OnPopup)) then
+    OnPopup(Self);
 
   //  High DPI
   if Owner is TUForm then
@@ -215,8 +232,16 @@ begin
   Form.ClientWidth := ItemW;
   Form.ClientHeight := 0;
 
+  // Calculate Separators
+  TotalSeparators := 0;
+  for I := 0 to ItemCount - 1 do
+    if (Self.Items[I].Caption = '-') then
+      inc(TotalSeparators);
+
+
   //  Find popup point
   TotalItemsHeight := ItemCount * Round(ItemHeight * DPI / 96);
+  TotalItemsHeight := TotalItemsHeight + ( SeparatorHeight - ItemHeight) * TotalSeparators;
 
   if X + Form.Width > Screen.WorkAreaWidth then
     //  Left
@@ -274,6 +299,14 @@ begin
       UItem.Height := ItemHeight;
       UItem.ShowHint := true;
       UItem.Transparent := true;
+
+      if MenuItem.Caption = '-' then
+        begin
+          UItem.Height := FSeparatorHeight;
+          UItem.Enabled := false;
+          UItem.FontIcon := '';
+          UItem.Caption := '-';
+        end;
 
       //  Scale item
       UItem.ScaleForPPI(DPI);

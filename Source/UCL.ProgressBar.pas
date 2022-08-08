@@ -184,14 +184,17 @@ end;
 procedure TUProgressBar.Paint;
 begin
   inherited;
+  Canvas.Pen.Style := psClear;
 
   //  Paint background
   Canvas.Brush.Handle := CreateSolidBrushWithAlpha(BackColor, 255);
-  Canvas.FillRect(BackRect);
+  Canvas.RoundRect(BackRect, ROUND_MIN_CONST, ROUND_MIN_CONST);
+  Canvas.Rectangle(BackRect.Left, BackRect.Top, BackRect.Left + ROUND_MIN_CONST, BackRect.Bottom);
 
   //  Paint Fillround
   Canvas.Brush.Handle := CreateSolidBrushWithAlpha(FillColor, 255);
-  Canvas.FillRect(FillRect);
+  Canvas.RoundRect(FillRect, ROUND_MIN_CONST, ROUND_MIN_CONST);
+  Canvas.Rectangle(FillRect.Right - ROUND_MIN_CONST, FillRect.Top, FillRect.Right, FillRect.Bottom);
 end;
 
 procedure TUProgressBar.Resize;

@@ -211,7 +211,7 @@ begin
 
   //  Modify default props
   Caption := UF_BACK;
-  Font.Name := 'Segoe MDL2 Assets';
+  Font.Name := 'Segoe Fluent Icons';
   Font.Size := 10;
   Height := 32;
   Width := 45;
